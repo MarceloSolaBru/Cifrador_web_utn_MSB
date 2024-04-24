@@ -1,5 +1,6 @@
 # Importa el decorador dataclass desde el módulo dataclasses
 from dataclasses import dataclass
+from typing import List
 # Importa la clase UserData desde el archivo user_data.py en el mismo directorio
 from .user_data import UserData
 # Importa la instancia db desde el módulo app, que parece ser un objeto de SQLAlchemy
@@ -20,8 +21,32 @@ class User(db.Model):  # Hereda de db.Model, lo que indica que es un modelo de b
     # Constructor de la clase User, que puede recibir un objeto UserData opcionalmente
     def __init__(self, user_data: UserData = None):
         # Si se proporciona un objeto UserData, se asigna a la propiedad 'data' del usuario
-        if user_data:
-            self.data = user_data
-        else:
-            # Si no se proporciona ningún objeto UserData, se crea uno nuevo y se asigna al usuario
-            self.data = UserData()
+         self.data = user_data
+
+    """
+    Aplico el patrón Active Record https://www.martinfowler.com/eaaCatalog/activeRecord.html, donde el modelo se encarga de la persistencia de los datos.
+    Este patrón es muy útil para aplicaciones pequeñas y medianas, pero no es recomendable para aplicaciones grandes.
+    Puede llegar a contradecir los principios SOLID http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod, ya que el modelo tiene responsabilidades de persistencia y de negocio.
+    
+    """
+
+    def save(self) -> 'User':
+        db.session.add(self)
+        db.session.commit()
+        return self
+
+    def delete(self) -> None:
+        db.session.delete(self)
+        db.session.commit()
+
+    @classmethod
+    def all(cls) -> List['User']:
+        return cls.query.all()
+
+    @classmethod
+    def find(cls, id: int) -> 'User':
+        return cls.query.get(id)
+
+    @classmethod
+    def find_by(cls, **kwargs) -> List['User']:
+        return cls.query.filter_by(**kwargs).all()
