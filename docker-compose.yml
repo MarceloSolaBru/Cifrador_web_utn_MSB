@@ -5,12 +5,12 @@ services:
     restart: always
 
     environment:
-      POSTGRES_PASSWORD: root
+      POSTGRES_PASSWORD: marce
       POSTGRES_DB: cifrador_UTNSB
-      POSTGRES_USER: root
+      POSTGRES_USER: marce
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
     volumes:
       # es buena practica path relativo desde el proyecto ./_data:/var/lib/postgresql
