@@ -1,0 +1,41 @@
+@startuml ClassDiagram
+'? Deberia utilizar UserData o juntarlos
+class User{
+    - id: int
+    '? ¿Esto es str?
+    - password: str
+    - language: str
+    + username: str
+    + email: str
+    - update_language(language: str)
+    - edit_username(new_username: str)
+    - edit_password(new_password: str)
+    + save()
+    + delete()
+    + find(id: int)
+}
+
+class Text{
+    - id: int
+    - length: int
+    + content: str
+    + language: str
+    + change_content(new_content: str)
+    + save()
+    + delete()
+    + find(id: int)
+    + encrypt_text(key: bytes)
+    + decrypt_content(key: bytes)
+}
+
+class TextHistory{
+    - id: int
+    + content: str
+    + time_stamp
+    + save()
+    + delete()
+    + find(id: int)
+    + get_versions_of_text(id: int)
+    + change_to_version(id: int)
+}
+@enduml
