@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from app import db
 from typing import List
 
-# from app.models.text_history import TextHistory
 from cryptography.fernet import Fernet
 
 
@@ -70,11 +69,7 @@ class Text(
 
     def change_content(self, new_content: str) -> None:
         # Cambia el contenido del texto y guarda la versión anterior en TextHistory.
-        #! ESTO NO SE HACE
-        from app.models.text_history import (
-            TextHistory,
-        )  # Importa dentro de la función o método
-
+        from app.models.text_history import TextHistory     #Importo desde una funciona para no generar importacion circular
         old_content = self.content
         self.content = new_content
         history = TextHistory(text_id=self.id, content=old_content)
