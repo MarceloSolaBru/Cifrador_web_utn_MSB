@@ -12,6 +12,15 @@ class UserTestCase(unittest.TestCase):
     """
 
     def setUp(self):
+        self.USERNAME_PRUEBA = 'pabloprats'
+        self.EMAIL_PRUEBA = 'test@test.com'
+        self.PASSWORD_PRUEBA = '123456'
+        self.ADDRESS_PRUEBA = 'Address 1234'
+        self.FIRSTNAME_PRUEBA = 'Pablo'
+        self.LASTNAME_PRUEBA = 'Prats'
+        self.PHONE_PRUEBA = '54260123456789'
+        self.CITY_PRUEBA = 'San Rafael'
+        self.COUNTRY_PRUEBA = 'Argentina'
         # Crea una instancia de la aplicación Flask para pruebas
         self.app = create_app()
         # Crea un contexto de la aplicación y lo activa
@@ -33,75 +42,34 @@ class UserTestCase(unittest.TestCase):
 
     # Prueba la creación de un usuario
     def test_user(self):
-        # Crea un objeto UserData con información de prueba
-        data = UserData()
-        data.firstname = "Pablo"
-        data.lastname = "Prats"
-        data.address = "Address 1234"
-        data.city = "San Rafael"
-        data.country = "Argentina"
-        data.phone = "54260123456789"
-
-        # Crea un objeto User y establece sus atributos
-        user = User(data)
-        user.email = "test@test.com"
-        user.username = "pabloprats"
-        user.password = "Qvv3r7y"
-
-        # Verifica que los atributos del usuario se hayan establecido correctamente
-        self.assertTrue(user.email, "test@test.com")
-        self.assertTrue(user.username, "pabloprats")
-        self.assertTrue(user.password, "Qvv3r7y")
-        self.assertIsNotNone(user.data)
-        self.assertTrue(user.data.address, "Address 1234")
-        self.assertTrue(user.data.firstname, "Pablo")
-        self.assertTrue(user.data.lastname, "Prats")
-        self.assertTrue(user.data.phone, "54260123456789")
-
+        user = self.__get_user()
+        self.assertTrue(user.email, self.EMAIL_PRUEBA)
+        self.assertTrue(user.username, self.USERNAME_PRUEBA)
+        self.assertTrue(user.password, self.PASSWORD_PRUEBA)
+        self.assertTrue(user.data.address, self.ADDRESS_PRUEBA)
+        self.assertTrue(user.data.firstname, self.FIRSTNAME_PRUEBA)
+        self.assertTrue(user.data.lastname, self.LASTNAME_PRUEBA)
+        self.assertTrue(user.data.phone, self.PHONE_PRUEBA)     
+    
     def test_user_save(self):
 
-        data = UserData()
-        data.firstname = "Pablo"
-        data.lastname = "Prats"
-        data.address = "Address 1234"
-        data.city = "San Rafael"
-        data.country = "Argentina"
-        data.phone = "54260123456789"
-
-        user = User(data)
-        user.email = "test@test.com"
-        user.username = "pabloprats"
-        user.password = "Qvv3r7y"
+        user=self.__get_user()
 
         user.save()
         self.assertGreaterEqual(user.id, 1)
-        self.assertTrue(user.email, "test@test.com")
-        self.assertTrue(user.username, "pabloprats")
-        self.assertTrue(user.password, "Qvv3r7y")
+        self.assertTrue(user.email, self.EMAIL_PRUEBA)
+        self.assertTrue(user.username, self.USERNAME_PRUEBA)
+        self.assertTrue(user.password, self.PASSWORD_PRUEBA)
+        self.assertTrue(user.data.address, self.ADDRESS_PRUEBA)
+        self.assertTrue(user.data.firstname, self.FIRSTNAME_PRUEBA)
+        self.assertTrue(user.data.lastname, self.LASTNAME_PRUEBA)
+        self.assertTrue(user.data.phone, self.PHONE_PRUEBA)
         self.assertIsNotNone(user.data)
-        self.assertTrue(user.data.address, "Address 1234")
-        self.assertTrue(user.data.firstname, "Pablo")
-        self.assertTrue(user.data.lastname, "Prats")
-        self.assertTrue(user.data.phone, "54260123456789")
 
     def test_user_delete(self):
 
-        data = UserData()
-        data.firstname = "Pablo"
-        data.lastname = "Prats"
-        data.address = "Address 1234"
-        data.city = "San Rafael"
-        data.country = "Argentina"
-        data.phone = "54260123456789"
-
-        user = User(data)
-        user.email = "test@test.com"
-        user.username = "pabloprats"
-        user.password = "Qvv3r7y"
-
+        user=self.__get_user()
         user.save()
-
-        # borro el usuario
         user.delete()
         self.assertIsNone(User.find(user.id))
 
@@ -127,18 +95,7 @@ class UserTestCase(unittest.TestCase):
 
     def test_user_find(self):
 
-        data = UserData()
-        data.firstname = "Pablo"
-        data.lastname = "Prats"
-        data.address = "Address 1234"
-        data.city = "San Rafael"
-        data.country = "Argentina"
-        data.phone = "54260123456789"
-
-        user = User(data)
-        user.email = "test@test.com"
-        user.username = "pabloprats"
-        user.password = "Qvv3r7y"
+        user = self.__get_user()
         user.save()
 
         user_find = User.find(1)
@@ -146,6 +103,22 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(user_find.id, user.id)
         self.assertEqual(user_find.email, user.email)
 
+    def __get_user(self):
+
+        data = UserData()
+        data.firstname = self.FIRSTNAME_PRUEBA
+        data.lastname = self.LASTNAME_PRUEBA
+        data.phone = self.PHONE_PRUEBA
+        data.address = self.ADDRESS_PRUEBA
+        data.city = self.CITY_PRUEBA
+        data.country = self.COUNTRY_PRUEBA
+
+        user = User(data)
+        user.username = self.USERNAME_PRUEBA
+        user.email = self.EMAIL_PRUEBA
+        user.password = self.PASSWORD_PRUEBA
+
+        return user
 
 if __name__ == "__main__":
     # Ejecuta el conjunto de pruebas si el script se ejecuta directamente

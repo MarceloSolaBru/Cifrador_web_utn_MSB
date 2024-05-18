@@ -58,7 +58,7 @@ class User(
 
     @classmethod
     def find(cls, id: int) -> "User":
-        return cls.query.get(id)
+        return db.session.query(cls).get(id)
 
     # ? ¿Lo necesito?
     # @classmethod
