@@ -7,6 +7,7 @@ from .user_data import UserData
 # Importa la instancia db desde el módulo app, que parece ser un objeto de SQLAlchemy
 from app import db
 from typing import List
+from app.models.relations import users_roles
 
 
 # Define una clase llamada User utilizando el decorador dataclass
@@ -31,11 +32,16 @@ class User(
 
     # Relación con la tabla 'UserData' (datos de usuario), establecida a través de la propiedad 'user' en la clase UserData
     data = db.relationship("UserData", uselist=False, back_populates="user")  # type: ignore
+        #Relacion Muchos a Muchos bidireccional con Role
+    #Flask Web Development Capitulo: Database Relationships Revisited Pag 49,149 
+    roles = db.relationship("Role", secondary=users_roles, back_populates='users')
 
     # Constructor de la clase User, que puede recibir un objeto UserData opcionalmente
     def __init__(self, user_data: UserData = None):
         self.data = user_data
 
+    #TODO: Implementar metodos para agregar, eliminar y listar roles
+    
     """
     Aplico el patrón Active Record https://www.martinfowler.com/eaaCatalog/activeRecord.html, donde el modelo se encarga de la persistencia de los datos.
     Este patrón es muy útil para aplicaciones pequeñas y medianas, pero no es recomendable para aplicaciones grandes.
