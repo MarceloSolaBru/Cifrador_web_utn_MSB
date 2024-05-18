@@ -32,6 +32,10 @@ class User(
     def __init__(self, user_data: UserData = None):
         self.data = user_data
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        
     def add_role(self, role):
         if role not in self.roles:
             self.roles.append(role)
