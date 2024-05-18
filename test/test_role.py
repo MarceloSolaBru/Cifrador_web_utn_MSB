@@ -14,7 +14,8 @@ class RoleTestCase(unittest.TestCase):
         # Crea un contexto de la aplicación y lo activa
         self.app_context = self.app.app_context()
         self.app_context.push()
-        self.app_context.push()
+        self.ROL_NAME = 'ROLE_ADMIN'
+        self.ROL_DESCRIPCION = 'Administrator'
         db.create_all()
 
     def tearDown(self):
@@ -29,10 +30,10 @@ class RoleTestCase(unittest.TestCase):
     
     # Prueba la creación de roles
     def test_role(self):
-        role=self.__get_role()
-        self.assertTrue(role.name, self.ROL_NAME)
-        self.assertTrue(role.description, self.ROL_DESCRIPCION)
-
+        role = self.__get_role()
+        self.assertTrue(role.name, 'ROLE_ADMIN')
+        self.assertTrue(role.description, 'Administrator')
+    
     def test_role_save(self):
         role = self.__get_role()
         role_service.save(role)

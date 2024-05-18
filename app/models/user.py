@@ -8,7 +8,7 @@ from .user_data import UserData
 from app import db
 from typing import List
 from app.models.relations import users_roles
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Define una clase llamada User utilizando el decorador dataclass
 @dataclass(init=False, repr=True, eq=True)
@@ -16,18 +16,10 @@ class User(
     db.Model
 ):  # Hereda de db.Model, lo que indica que es un modelo de base de datos
     __tablename__ = "users"  # Nombre de la tabla en la base de datos
-    id: int = db.Column(
-        db.Integer, primary_key=True, autoincrement=True
-    )  # Columna de clave primaria
-    username: str = db.Column(
-        db.String(80), unique=True, nullable=False
-    )  # Columna para el nombre de usuario
-    password: str = db.Column(
-        db.String(120), nullable=False
-    )  # Columna para la contraseña del usuario
-    email: str = db.Column(
-        db.String(120), unique=True, nullable=False
-    )  # Columna para el correo electrónico del usuario
+    id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Columna de clave primaria
+    username: str = db.Column(db.String(80), unique=True, nullable=False)  # Columna para el nombre de usuario
+    password: str = db.Column('password', db.String(255), nullable=False)  # Columna para la contraseña del usuario
+    email: str = db.Column(db.String(120), unique=True, nullable=False)  # Columna para el correo electrónico del usuario
     users_rs = db.relationship("Text", backref="user", lazy=True)
 
     # Relación con la tabla 'UserData' (datos de usuario), establecida a través de la propiedad 'user' en la clase UserData
@@ -40,33 +32,5 @@ class User(
     def __init__(self, user_data: UserData = None):
         self.data = user_data
 
-    #TODO: Implementar metodos para agregar, eliminar y listar roles
-    
-    """
-    Aplico el patrón Active Record https://www.martinfowler.com/eaaCatalog/activeRecord.html, donde el modelo se encarga de la persistencia de los datos.
-    Este patrón es muy útil para aplicaciones pequeñas y medianas, pero no es recomendable para aplicaciones grandes.
-    Puede llegar a contradecir los principios SOLID http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod, ya que el modelo tiene responsabilidades de persistencia y de negocio.
-    """
-
-    def save(self) -> "User":
-        db.session.add(self)
-        db.session.commit()
-        return self
-
-    def delete(self) -> None:
-        db.session.delete(self)
-        db.session.commit()
-
-    # ? ¿Lo necesito?
-    # @classmethod
-    # def all(cls) -> List["User"]:
-    #     return cls.query.all()
-
-    @classmethod
-    def find(cls, id: int) -> "User":
-        return db.session.query(cls).get(id)
-
-    # ? ¿Lo necesito?
-    # @classmethod
-    # def find_by(cls, **kwargs) -> List["User"]:
-    #     return cls.query.filter_by(**kwargs).all()
+    def __post_init__(self):
+        self.password = self.__password 
