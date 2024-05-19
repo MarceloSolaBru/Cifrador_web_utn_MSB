@@ -1,8 +1,7 @@
 import unittest
 from flask import current_app
-from app import create_app
+from app import create_app, db
 from app.models import Role, User, UserData
-from app import db
 from app.services import RoleService, UserService
 
 role_service = RoleService()
@@ -83,3 +82,5 @@ class UsersRoleTestCase(unittest.TestCase):
             user.password = self.PASSWORD_PRUEBA
 
             return user
+
+

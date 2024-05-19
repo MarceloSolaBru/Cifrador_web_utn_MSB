@@ -5,10 +5,6 @@ from app.models import Text, TextHistory, User, Role, UserData
 
 app = create_app()
 
-
-# register the blueprint
-app.register_blueprint(index)
-
 with app.app_context():
     # Create tables
     db.create_all()
