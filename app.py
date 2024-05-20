@@ -2,8 +2,14 @@ from app import create_app, db
 from flask import Flask
 from app.routes.index import index
 from app.models import Text, TextHistory, User, Role, UserData
+from app.auth.routes import auth as auth_blueprint
+from app.routes import index as index_blueprint
+from app.resources import home as home_blueprint
 
 app = create_app()
+app.register_blueprint(auth_blueprint)
+app.register_blueprint(index_blueprint)
+app.register_blueprint(home_blueprint, url_prefix="/api/v1")  
 
 with app.app_context():
     # Create tables

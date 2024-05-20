@@ -13,6 +13,7 @@ load_dotenv(os.path.join(basedir, ".env"))
 # Clase base para la configuración de la aplicación
 class Config(object):
     TESTING = False  
+    SECRET_KEY = os.urandom(24)
     SQLALCHEMY_TRACK_MODIFICATIONS = (False)
     SQLALCHEMY_RECORD_QUERIES = True  
 
@@ -20,7 +21,6 @@ class Config(object):
     @staticmethod
     def init_app(app):
         pass  # No hace nada por defecto
-
 
 # Clase de configuración para el entorno de desarrollo
 class DevelopmentConfig(Config):

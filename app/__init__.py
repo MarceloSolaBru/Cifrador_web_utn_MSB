@@ -31,17 +31,15 @@ def create_app() -> Flask:
     ma.init_app(app)  
     db.init_app(app)  
     login_manager.init_app(app)
-    login_manager.login_view = "auth"
+    login_manager.login_view = "login"
     migrate.init_app(app, db)  # Inicializa Flask-Migrate con la aplicación y la instancia de SQLAlchemy
 
-    # Registra los blueprints (enrutadores modulares) en la aplicación
-    from app.auth import auth as auth_blueprint
-    from app.routes import index as index_blueprint
-    from app.resources import home as home_blueprint
+    # # Registra los blueprints (enrutadores modulares) en la aplicación
+    # from app.auth.routes import auth as auth_blueprint
+    # from app.routes import index as index_blueprint
+    # from app.resources import home as home_blueprint
 
-    app.register_blueprint(auth_blueprint)
-    app.register_blueprint(index_blueprint)
-    app.register_blueprint(home_blueprint, url_prefix="/api/v1")  
+
 
     @login_manager.user_loader
     def load_user(user_id):

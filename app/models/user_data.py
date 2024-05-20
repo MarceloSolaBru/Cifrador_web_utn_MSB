@@ -12,10 +12,10 @@ class UserData(db.Model):  # Hereda de db.Model, lo que indica que es un modelo 
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Columna de clave primaria
     firstname: str = db.Column(db.String(80), nullable=False)
     lastname: str = db.Column(db.String(80), nullable=False)
-    phone: str = db.Column(db.String(120), nullable=False)  # Columna para el número de teléfono del usuario
-    address: str = db.Column(db.String(120), nullable=False)  # Columna para la dirección del usuario
-    city: str = db.Column(db.String(120), nullable=False)  # Columna para la ciudad del usuario
-    country: str = db.Column(db.String(120), nullable=False)  # Columna para el país del usuario
+    phone: str = db.Column(db.String(120), nullable=False)  
+    address: str = db.Column(db.String(120), nullable=False)  
+    city: str = db.Column(db.String(120), nullable=False)  
+    country: str = db.Column(db.String(120), nullable=False) 
 
     # Columna de clave externa para establecer la relación con la tabla 'users' (usuarios)
     user_id = db.Column("user_id", db.Integer, db.ForeignKey("users.id"))

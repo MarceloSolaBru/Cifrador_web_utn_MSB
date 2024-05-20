@@ -12,24 +12,21 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # Define una clase llamada User utilizando el decorador dataclass
 @dataclass(init=False, repr=True, eq=True)
-class User(
-    db.Model
-):  # Hereda de db.Model, lo que indica que es un modelo de base de datos
-    __tablename__ = "users"  # Nombre de la tabla en la base de datos
-    id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Columna de clave primaria
-    username: str = db.Column(db.String(80), unique=True, nullable=False)  # Columna para el nombre de usuario
-    password: str = db.Column('password', db.String(255), nullable=False)  # Columna para la contraseña del usuario
-    email: str = db.Column(db.String(120), unique=True, nullable=False)  # Columna para el correo electrónico del usuario
+class User(db.Model):  # Hereda de db.Model, lo que indica que es un modelo de base de datos
+    __tablename__ = "users"
+    id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username: str = db.Column(db.String(80), unique=True, nullable=False)
+    password: str = db.Column('password', db.String(255), nullable=False)
+    email: str = db.Column(db.String(120), unique=True, nullable=False)
     users_rs = db.relationship("Text", backref="user", lazy=True)
-
-    # Relación con la tabla 'UserData' (datos de usuario), establecida a través de la propiedad 'user' en la clase UserData
     data = db.relationship("UserData", uselist=False, back_populates="user")  # type: ignore
-        #Relacion Muchos a Muchos bidireccional con Role
-    #Flask Web Development Capitulo: Database Relationships Revisited Pag 49,149 
     roles = db.relationship("Role", secondary=users_roles, back_populates='users')
 
     # Constructor de la clase User, que puede recibir un objeto UserData opcionalmente
-    def __init__(self, user_data: UserData = None):
+    def __init__(self, username: str, email: str, password: str, user_data: UserData = None):
+        self.username = username
+        self.email = email
+        self.password = password
         self.data = user_data
 
     def save(self):

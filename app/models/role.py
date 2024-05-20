@@ -11,7 +11,6 @@ class Role (db.Model):
     name: str = db.Column(db.String(80), unique=True, nullable=False)
     description: str  = db.Column(db.String(255), nullable=False)
     #Relacion Muchos a Muchos bidireccional con User
-    #Flask Web Development Capitulo: Database Relationships Revisited Pag 49,149 
     users = db.relationship("User", secondary=users_roles, back_populates='roles')
 
     #TODO: Implementar metodos para agregar, eliminar y listar usuarios

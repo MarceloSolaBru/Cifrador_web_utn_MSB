@@ -4,7 +4,6 @@ from typing import List
 
 from app.models.text import Text
 
-
 @dataclass(init=False, repr=True, eq=True)
 class TextHistory(db.Model):
     __tablename__ = "text_histories"
