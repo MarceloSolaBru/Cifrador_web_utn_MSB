@@ -4,9 +4,10 @@ from app import db
 from typing import List
 from app.models.relations import users_roles
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 @dataclass(init=False, repr=True, eq=True)
-class User(db.Model):  # Hereda de db.Model, lo que indica que es un modelo de base de datos
+class User(db.Model, UserMixin):  # Hereda de db.Model, lo que indica que es un modelo de base de datos
     __tablename__ = "users"
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username: str = db.Column(db.String(80), unique=True, nullable=False)
@@ -34,3 +35,7 @@ class User(db.Model):  # Hereda de db.Model, lo que indica que es un modelo de b
     def remove_role(self, role):
         if role in self.roles:
             self.roles.remove(role)
+    
+    def is_active(self):
+        # aca va la lógica para determinar si el usuario está activo
+        return True  # devuelve True si el usuario siempre está activo

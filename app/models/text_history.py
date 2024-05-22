@@ -11,7 +11,7 @@ class TextHistory(db.Model):
     text_id: int = db.Column(db.Integer, db.ForeignKey("texts.id"), nullable=False)
     content: str = db.Column(db.String(120), nullable=False)
     timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
-
+    user_id: int = db.Column(db.Integer, db.ForeignKey("users.id"))
     def save(self) -> "TextHistory":
         db.session.add(self)
         db.session.commit()

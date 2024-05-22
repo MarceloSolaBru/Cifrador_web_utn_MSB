@@ -1,17 +1,18 @@
 from flask import Blueprint, render_template, request, redirect
 from app.models.text import Text
 from cryptography.fernet import Fernet
+from app.models.user import User
 import hashlib
 import base64
+from flask_login import LoginManager, current_user, login_required
 
 index = Blueprint("index", __name__)
 
 @index.route("/")
+@login_required
 def home():
-    texts = Text.all()
-    for text in texts:
-        print(type(text.key))
-    return render_template("index.html", texts=texts)
+    user_texts = Text.query.filter_by(user_id=current_user.id).all()
+    return render_template('index.html', texts=user_texts)
 
 @index.route("/encrypt", methods=["POST"])
 def encrypt():
