@@ -14,6 +14,11 @@ class Role (db.Model):
 
     #TODO: Implementar metodos para agregar, eliminar y listar usuarios
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self
+    
     def add_user(self, user):
         if user not in self.users:
             self.users.append(user)

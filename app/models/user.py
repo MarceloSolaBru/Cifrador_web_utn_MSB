@@ -18,10 +18,11 @@ class User(db.Model, UserMixin):  # Hereda de db.Model, lo que indica que es un 
     roles = db.relationship("Role", secondary=users_roles, back_populates='users')
     role_id: int = db.Column(db.Integer, db.ForeignKey("roles.id"), nullable=True)
 
-    # Constructor de la clase User, que puede recibir un objeto UserData opcionalmente
-    def __init__(self, username: str, email: str, password: str, user_data: UserData = None):
-        self.data = user_data
-
+    def __init__(self, username: str, password: str, email: str):
+        self.username = username
+        self.password = generate_password_hash(password)
+        self.email = email
+        
     def save(self):
         db.session.add(self)
         db.session.commit()

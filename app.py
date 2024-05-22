@@ -9,7 +9,7 @@ from app.services import roles
 import os
 
 app = create_app()
-app.secret_key = os.environ.get("SECRET_KEY")
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.register_blueprint(auth_blueprint)
 app.register_blueprint(index_blueprint)
 app.register_blueprint(home_blueprint, url_prefix="/api/v1")  

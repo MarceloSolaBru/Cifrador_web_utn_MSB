@@ -107,22 +107,12 @@ class TextTestCase(unittest.TestCase):
     # test para comprobar que funciona la relacion entres usuarios y textos
     def test_user_text(self):
         from app.models.user import User
-        from app.models.user_data import UserData
-
-        # Crea un objeto UserData con información de prueba
-        data = UserData()
-        data.firstname = "Pablo"
-        data.lastname = "Prats"
-        data.address = "Address 1234"
-        data.city = "San Rafael"
-        data.country = "Argentina"
-        data.phone = "54260123456789"
 
         # Crea un objeto User y establece sus atributos
-        user = User(data)
-        user.email = "test@test.com"
-        user.username = "pabloprats"
-        user.password = "Qvv3r7y"
+        email = "test@test.com"
+        username = "pabloprats"
+        password = "Qvv3r7y"
+        user = User(email,username,password)
         user_service = UserService()
         user_service.save(user)
 
@@ -131,7 +121,6 @@ class TextTestCase(unittest.TestCase):
         self.set_text_attributes(text)
         text.user_id = user.id
         text.save()
-
 
 if __name__ == "__main__":
     unittest.main()

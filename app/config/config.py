@@ -13,7 +13,6 @@ load_dotenv(os.path.join(basedir, ".env"))
 # Clase base para la configuración de la aplicación
 class Config(object):
     TESTING = False  
-    SECRET_KEY = os.urandom(24)
     SQLALCHEMY_TRACK_MODIFICATIONS = (False)
     SQLALCHEMY_RECORD_QUERIES = True  
 
@@ -47,9 +46,6 @@ class ProductionConfig(Config):
 
 # Función de fábrica que devuelve la clase de configuración según el entorno especificado
 def factory(app):
-    configuration = {
-        "development": DevelopmentConfig,  # Clase de configuración para el entorno de desarrollo
-        "production": ProductionConfig,  
-    }
+    configuration = {"development": DevelopmentConfig,}
 
     return configuration[app]  # Devuelve la clase de configuración correspondiente al entorno

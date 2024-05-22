@@ -12,7 +12,6 @@ def create_admin_role():
         role.description = "Administrador"
         role.save()
 
-
 def create_user_role():
     role = Role.query.filter_by(name="user").first()
     if role:
@@ -22,7 +21,6 @@ def create_user_role():
         role.name = "user"
         role.description = "Usuario"
         role.save()
-
 
 def create_admin_user():
     user = User.query.filter_by(username="admin").first()
