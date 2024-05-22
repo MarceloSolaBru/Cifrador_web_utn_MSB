@@ -1,9 +1,5 @@
-# Importa el decorador dataclass desde el módulo dataclasses
 from dataclasses import dataclass
-
-# Importa la instancia db desde el módulo app, que parece ser un objeto de SQLAlchemy
 from app import db
-
 
 # Define una clase llamada UserData utilizando el decorador dataclass
 @dataclass(init=False, repr=True, eq=True)

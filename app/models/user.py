@@ -1,16 +1,10 @@
-# Importa el decorador dataclass desde el módulo dataclasses
 from dataclasses import dataclass
-
-# Importa la clase UserData desde el archivo user_data.py en el mismo directorio
 from .user_data import UserData
-
-# Importa la instancia db desde el módulo app, que parece ser un objeto de SQLAlchemy
 from app import db
 from typing import List
 from app.models.relations import users_roles
 from werkzeug.security import generate_password_hash, check_password_hash
 
-# Define una clase llamada User utilizando el decorador dataclass
 @dataclass(init=False, repr=True, eq=True)
 class User(db.Model):  # Hereda de db.Model, lo que indica que es un modelo de base de datos
     __tablename__ = "users"

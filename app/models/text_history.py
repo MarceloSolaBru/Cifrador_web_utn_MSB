@@ -28,11 +28,7 @@ class TextHistory(db.Model):
     @staticmethod
     def get_versions_of_text(text_id: int) -> List["TextHistory"]:
         # Obtiene todas las versiones de un texto específico.
-        return (
-            TextHistory.query.filter_by(text_id=text_id)
-            .order_by(TextHistory.timestamp.desc())
-            .all()
-        )
+        return (TextHistory.query.filter_by(text_id=text_id).order_by(TextHistory.timestamp.desc()).all())
 
     def change_to_version(self, version_id: int) -> None:
         # Cambia a una versión específica del texto.

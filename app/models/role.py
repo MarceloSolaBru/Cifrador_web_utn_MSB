@@ -1,4 +1,3 @@
-# Importa el decorador dataclass desde el módulo dataclasses
 from dataclasses import dataclass
 from app.models.relations import users_roles
 from app import db
