@@ -4,10 +4,12 @@ from app.repositories import ProfileRepository
 
 repository = ProfileRepository()
 
+
 class ProfileService:
     """
     ProfileService class
     """
+
     def __init__(self):
         pass
 

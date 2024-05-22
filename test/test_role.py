@@ -7,6 +7,7 @@ from app.services import RoleService
 
 role_service = RoleService()
 
+
 class RoleTestCase(unittest.TestCase):
     def setUp(self):
         # Crea una instancia de la aplicación Flask para pruebas
@@ -14,26 +15,26 @@ class RoleTestCase(unittest.TestCase):
         # Crea un contexto de la aplicación y lo activa
         self.app_context = self.app.app_context()
         self.app_context.push()
-        self.ROL_NAME = 'ROLE_ADMIN'
-        self.ROL_DESCRIPCION = 'Administrator'
+        self.ROL_NAME = "ROLE_ADMIN"
+        self.ROL_DESCRIPCION = "Administrator"
         db.create_all()
 
     def tearDown(self):
+        # Desactiva y limpia el contexto de la aplicación
         db.session.remove()
         db.drop_all()
-        # Desactiva y limpia el contexto de la aplicación
         self.app_context.pop()
 
     # Prueba si la aplicación Flask se crea correctamente
     def test_app(self):
         self.assertIsNotNone(current_app)
-    
+
     # Prueba la creación de roles
     def test_role(self):
         role = self.__get_role()
-        self.assertTrue(role.name, 'ROLE_ADMIN')
-        self.assertTrue(role.description, 'Administrator')
-    
+        self.assertTrue(role.name, "ROLE_ADMIN")
+        self.assertTrue(role.description, "Administrator")
+
     def test_role_save(self):
         role = self.__get_role()
         role_service.save(role)
@@ -44,10 +45,10 @@ class RoleTestCase(unittest.TestCase):
     def test_role_update(self):
         role = self.__get_role()
         role_service.save(role)
-        role.description = 'Administrator Updated'
+        role.description = "Administrator Updated"
         role_service.update(role, role.id)
         self.assertTrue(role.name, self.ROL_NAME)
-        self.assertTrue(role.description, 'Administrator Updated')
+        self.assertTrue(role.description, "Administrator Updated")
 
     def test_role_delete(self):
         role = self.__get_role()
@@ -81,6 +82,7 @@ class RoleTestCase(unittest.TestCase):
         role.description = self.ROL_DESCRIPCION
         return role
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # Ejecuta el conjunto de pruebas si el script se ejecuta directamente
     unittest.main()

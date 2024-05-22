@@ -15,14 +15,11 @@ class Text(db.Model):  # Hereda de db.Model, lo que indica que es un modelo de b
     user_id: int = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
     encrypted: bool = db.Column(db.Boolean, default=False)
     key: bytes = db.Column(db.LargeBinary, nullable=True)
-    
-    histories = db.relationship("TextHistory", backref="text", lazy=True)
 
     def __init__(self, content: str = "default text", language: str = "es", user_id: int=None):
         self.content = content
         self.length = len(content)
         self.language = language
-        self.user_id = user_id
 
     def save(self) -> "Text":
         db.session.add(self)
@@ -61,3 +58,11 @@ class Text(db.Model):  # Hereda de db.Model, lo que indica que es un modelo de b
         self.content = new_content
         history = TextHistory(text_id=self.id, content=old_content)
         history.save()
+        old_content = self.content
+        self.content = new_content
+        history = TextHistory(text_id=self.id, content=old_content)
+        history.save()
+
+    @classmethod
+    def find_by(cls, **kwargs) -> List["Text"]:
+        return cls.query.filter_by(**kwargs).all()

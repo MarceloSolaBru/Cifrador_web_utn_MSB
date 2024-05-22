@@ -4,10 +4,12 @@ from app.repositories import RoleRepository
 
 repository = RoleRepository()
 
+
 class RoleService:
     """
     RoleService class
     """
+
     def __init__(self):
         pass
 
