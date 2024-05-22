@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):  # Hereda de db.Model, lo que indica que es un 
 
     def __init__(self, username: str, password: str, email: str):
         self.username = username
-        self.password = generate_password_hash(password)
+        self.password = password
         self.email = email
         
     def save(self):

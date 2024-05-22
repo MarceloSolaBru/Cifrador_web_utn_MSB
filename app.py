@@ -19,7 +19,7 @@ with app.app_context():
     db.create_all()
     roles.create_admin_role()
     roles.create_user_role()
-    roles.create_admin_user()
+    # roles.create_admin_user()
 # https://flask.palletsprojects.com/en/3.0.x/appcontext/
 app.app_context().push()
 

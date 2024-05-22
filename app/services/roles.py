@@ -22,22 +22,7 @@ def create_user_role():
         role.description = "Usuario"
         role.save()
 
-def create_admin_user():
-    user = User.query.filter_by(username="admin").first()
-    if user:
-        pass
-    else:
-        data = UserData()
-        data.firstname = "Administrador"
-        data.lastname = "Administrador"
-        data.address = "Admin Address"
-        data.city = "Admin Adress"
-        data.country = "Admin Country"
-        data.phone = "123456789"
-
-        user = User(data)
-        user.email = "admin@gmail.com"
-        user.username = "admin"
-        user.password = "admin"
-        user.role_id = 1
-        user.save()
+# def create_admin_user():
+#     user = User(username = "admin",password="admin_password", email="admin@example.com")
+#     user.role_id = 1
+#     user.save()
