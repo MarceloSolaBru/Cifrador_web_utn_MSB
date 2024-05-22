@@ -6,14 +6,12 @@ import base64
 
 index = Blueprint("index", __name__)
 
-
 @index.route("/")
 def home():
     texts = Text.all()
     for text in texts:
         print(type(text.key))
     return render_template("index.html", texts=texts)
-
 
 @index.route("/encrypt", methods=["POST"])
 def encrypt():
@@ -30,7 +28,6 @@ def encrypt():
 
     return redirect("/")
 
-
 @index.route("/decrypt", methods=["POST"])
 def decrypt():
     text_id = int(request.form["text_id"])  # Convert text_id to an integer
@@ -45,7 +42,6 @@ def decrypt():
         return redirect("/")
     else:
         return redirect("/")
-
 
 @index.route("/encrypt-again", methods=["POST"])
 def encrypt_again():
