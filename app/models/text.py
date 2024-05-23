@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from app import db
 from typing import List
 from cryptography.fernet import Fernet
+from flask_login import current_user
 
 @dataclass(init=False, repr=True, eq=True)
 class Text(db.Model):  # Hereda de db.Model, lo que indica que es un modelo de base de datos
@@ -12,11 +13,11 @@ class Text(db.Model):  # Hereda de db.Model, lo que indica que es un modelo de b
     language: str = db.Column(db.String(120), nullable=False)  
     # Define la relación con TextHistory
     histories = db.relationship("TextHistory", backref="text", lazy=True)
-    user_id: int = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+    user_id: int = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     encrypted: bool = db.Column(db.Boolean, default=False)
     key: bytes = db.Column(db.LargeBinary, nullable=True)
 
-    def __init__(self, content: str = "default text", language: str = "es", user_id: int=None):
+    def __init__(self, content: str = "default text", language: str = "es", user_id: int=None,):
         self.content = content
         self.length = len(content)
         self.language = language
@@ -44,6 +45,7 @@ class Text(db.Model):  # Hereda de db.Model, lo que indica que es un modelo de b
         encrypted_content = f.encrypt(self.content.encode())
         self.content = encrypted_content.decode()
         self.encrypted = True
+        self.user_id = current_user.id
 
     def decrypt_content(self, key: bytes) -> None:
         f = Fernet(key)

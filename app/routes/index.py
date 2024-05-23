@@ -16,7 +16,7 @@ def home():
 
 @index.route("/encrypt", methods=["POST"])
 def encrypt():
-    text = Text(content=request.form["content"])
+    text = Text(content=request.form["content"],user_id=current_user.id)
 
     if request.form["key"]:
         key_form = request.form["key"]
