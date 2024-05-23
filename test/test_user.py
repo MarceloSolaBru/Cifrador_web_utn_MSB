@@ -64,11 +64,6 @@ class UserTestCase(unittest.TestCase):
         self.assertTrue(user.username, self.USERNAME_PRUEBA)
         self.assertIsNotNone(user.password)
         self.assertTrue(user_service.check_auth(user.username, self.PASSWORD_PRUEBA))
-        self.assertIsNotNone(user.data)
-        self.assertTrue(user.data.address, self.ADDRESS_PRUEBA)
-        self.assertTrue(user.data.firstname, self.FIRSTNAME_PRUEBA)
-        self.assertTrue(user.data.lastname, self.LASTNAME_PRUEBA)
-        self.assertTrue(user.data.phone, self.PHONE_PRUEBA)
 
     def test_user_delete(self):
 

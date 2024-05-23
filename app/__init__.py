@@ -31,7 +31,7 @@ def create_app() -> Flask:
     ma.init_app(app)  
     db.init_app(app)  
     login_manager.init_app(app)
-    login_manager.login_view = "login"
+    login_manager.login_view = 'auth.login'
     migrate.init_app(app, db)  # Inicializa Flask-Migrate con la aplicación y la instancia de SQLAlchemy
 
     # # Registra los blueprints (enrutadores modulares) en la aplicación
