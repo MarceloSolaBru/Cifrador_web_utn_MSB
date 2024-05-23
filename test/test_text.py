@@ -4,6 +4,7 @@ from app import create_app, db
 from app.models import Text, TextHistory
 from cryptography.fernet import Fernet
 from app.services import UserService
+from app.models.user import User
 
 
 class TextTestCase(unittest.TestCase):
@@ -12,6 +13,10 @@ class TextTestCase(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
+
+        # Add a user to avoid ForeignKey constraint violations
+        self.user = User(email="test@test.com", username="pabloprats", password="Qvv3r7y")
+        UserService().save(self.user)
 
     def tearDown(self):
         db.session.remove()
@@ -25,6 +30,7 @@ class TextTestCase(unittest.TestCase):
         text.content = "Hola mundo"
         text.length = len(text.content)
         text.language = "es"
+        text.user_id = self.user.id
 
     def assert_text_content(self, text):
         self.assertEqual(text.content, "Hola mundo")
@@ -54,7 +60,7 @@ class TextTestCase(unittest.TestCase):
         text = Text()
         self.set_text_attributes(text)
         text.save()
-        text_find = Text.find(1)
+        text_find = Text.find(text.id)
         self.assertIsNotNone(text_find)
         self.assertEqual(text_find.id, text.id)
         self.assertEqual(text_find.content, text.content)
@@ -71,7 +77,6 @@ class TextTestCase(unittest.TestCase):
         self.assertNotEqual(text.content, "Hola mundo")
         self.assertIsInstance(text.content, str)
 
-    # metodo para encriptar
     def test_decrypt_content(self):
         text = Text()
         self.set_text_attributes(text)
@@ -85,42 +90,33 @@ class TextTestCase(unittest.TestCase):
         self.assertEqual(text.content, "Hola mundo")
 
     def test_change_content(self):
-        # Crea un objeto Text y guarda una versión
+        # Create a Text object and save a version
         text = Text()
         self.set_text_attributes(text)
         text.save()
 
         old_content = text.content
 
-        # Cambia el contenido
+        # Change the content
         new_content = "Hola mundo"
         text.change_content(new_content)
 
-        # Verifica que el contenido haya cambiado
+        # Verify that the content has changed
         self.assertEqual(text.content, new_content)
 
-        # Verifica que se haya guardado la versión anterior en TextHistory
+        # Verify that the previous version is saved in TextHistory
         history = TextHistory.query.filter_by(text_id=text.id).first()
         self.assertIsNotNone(history)
         self.assertEqual(history.content, old_content)
 
-    # test para comprobar que funciona la relacion entres usuarios y textos
     def test_user_text(self):
-        from app.models.user import User
-
-        # Crea un objeto User y establece sus atributos
-        email = "test@test.com"
-        username = "pabloprats"
-        password = "Qvv3r7y"
-        user = User(email,username,password)
-        user_service = UserService()
-        user_service.save(user)
-
-        # Crea un objeto Text y establece sus atributos
+        # Create a Text object and associate it with a user
         text = Text()
         self.set_text_attributes(text)
-        text.user_id = user.id
         text.save()
+
+        self.assertEqual(text.user_id, self.user.id)
+
 
 if __name__ == "__main__":
     unittest.main()
