@@ -2,12 +2,14 @@ from typing import List, Type
 from app.models import User
 from app import db
 
+
 class UserRepository:
     """
     Aplicamos Responsabilidad Única y el Patrón Repository https://martinfowler.com/eaaCatalog/repository.html
     """
+
     def save(self, user: User) -> User:
-        db.session.add(user) 
+        db.session.add(user)
         db.session.commit()
         return user
 
@@ -39,5 +41,5 @@ class UserRepository:
         return db.session.query(User).filter(User.username == username).one_or_none()
 
     def find_by_email(self, email: str) -> list[User]:
-        #busqueda por like
-        return db.session.query(User).filter(User.email.like(f'%{email}%')).all()
+        # busqueda por like
+        return db.session.query(User).filter(User.email.like(f"%{email}%")).all()

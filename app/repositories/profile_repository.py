@@ -2,10 +2,11 @@ from typing import List, Type
 from app.models import Profile
 from app import db
 
+
 class ProfileRepository:
 
     def save(self, profile: Profile) -> Profile:
-        db.session.add(profile) 
+        db.session.add(profile)
         db.session.commit()
         return profile
 

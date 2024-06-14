@@ -5,9 +5,9 @@ services:
     restart: always
 
     environment:
-      POSTGRES_PASSWORD: marce
-      POSTGRES_DB: cifrador_UTNSB
-      POSTGRES_USER: marce
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: cifrador_db
+      POSTGRES_USER: root
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5433:5432"
@@ -24,7 +24,7 @@ services:
     restart: always
 
     environment:
-      PGADMIN_DEFAULT_EMAIL: marcelosola2001@gmail.com
+      PGADMIN_DEFAULT_EMAIL: franbichir@gmail.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "5050:80"

@@ -38,13 +38,6 @@ class UserTestCase(unittest.TestCase):
     def test_app(self):
         self.assertIsNotNone(current_app)
 
-    def __get_user(self):
-        username = self.USERNAME_PRUEBA
-        email = self.EMAIL_PRUEBA
-        password = self.PASSWORD_PRUEBA
-        user=User (username, password, email)
-        return user
-
     def test_user(self):
 
         user = self.__get_user()
@@ -52,6 +45,11 @@ class UserTestCase(unittest.TestCase):
         self.assertTrue(user.email, self.EMAIL_PRUEBA)
         self.assertTrue(user.username, self.USERNAME_PRUEBA)
         self.assertTrue(user.password, self.PASSWORD_PRUEBA)
+        self.assertIsNotNone(user.data)
+        self.assertTrue(user.data.address, self.ADDRESS_PRUEBA)
+        self.assertTrue(user.data.firstname, self.FIRSTNAME_PRUEBA)
+        self.assertTrue(user.data.lastname, self.LASTNAME_PRUEBA)
+        self.assertTrue(user.data.phone, self.PHONE_PRUEBA)
 
     def test_user_save(self):
 
@@ -64,6 +62,11 @@ class UserTestCase(unittest.TestCase):
         self.assertTrue(user.username, self.USERNAME_PRUEBA)
         self.assertIsNotNone(user.password)
         self.assertTrue(user_service.check_auth(user.username, self.PASSWORD_PRUEBA))
+        self.assertIsNotNone(user.data)
+        self.assertTrue(user.data.address, self.ADDRESS_PRUEBA)
+        self.assertTrue(user.data.firstname, self.FIRSTNAME_PRUEBA)
+        self.assertTrue(user.data.lastname, self.LASTNAME_PRUEBA)
+        self.assertTrue(user.data.phone, self.PHONE_PRUEBA)
 
     def test_user_delete(self):
 
@@ -93,6 +96,21 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(user_find.id, user.id)
         self.assertEqual(user_find.email, user.email)
 
+    def __get_user(self):
+        data = UserData()
+        data.firstname = self.FIRSTNAME_PRUEBA
+        data.lastname = self.LASTNAME_PRUEBA
+        data.phone = self.PHONE_PRUEBA
+        data.address = self.ADDRESS_PRUEBA
+        data.city = self.CITY_PRUEBA
+        data.country = self.COUNTRY_PRUEBA
+
+        user = User(data)
+        user.username = self.USERNAME_PRUEBA
+        user.email = self.EMAIL_PRUEBA
+        user.password = self.PASSWORD_PRUEBA
+
+        return user
 
 
 if __name__ == "__main__":

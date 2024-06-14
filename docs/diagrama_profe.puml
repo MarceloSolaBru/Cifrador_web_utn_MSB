@@ -1,0 +1,57 @@
+@startuml Diagram de Clases
+class Model {
+ clase de SQLAlchemy
+}
+
+class User {
+    - username: str
+    - email: str
+    - password: str
+}
+
+class UserData{
+    - name: str
+    - firstname: str
+    - lastname: str
+    - phone: str
+    - address: str
+    - city: str
+    - country: str
+}
+
+class Profile{
+    - name: str
+}
+
+class Role {
+    - name: str
+    - description: str
+}
+
+class AudiMixin{
+    - created_at: datetime
+    - updated_at: datetime
+    - created_by: int
+    - updated_by: int
+}
+
+class SoftDeleteMixin {
+    - deleted_at: datetime
+
+}
+
+Model <|-- User
+SoftDeleteMixin <|-- User
+AudiMixin <|-- User
+Model <|-- Role
+Model <|-- UserData
+SoftDeleteMixin <|-- UserData
+AudiMixin <|-- UserData
+Model <|-- Profile
+SoftDeleteMixin <|-- Profile
+AudiMixin <|-- Profile
+
+User "1" *--- "1" UserData : contiene
+Profile "1" ---- "n" UserData
+User "m" o--o "n" Role
+@enduml

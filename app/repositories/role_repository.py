@@ -2,6 +2,7 @@ from typing import List
 from app.models import Role
 from app import db
 
+
 class RoleRepository:
     """
     RoleRepository class
