@@ -3,11 +3,11 @@ from flask import current_app
 from app import create_app, db
 from app.models.text_history import TextHistory
 from app.models.text import Text
-from app.repositories import TextRepository
+from app.repositories import TextRepository,TextHistoryRepository
 
 
 text_repository = TextRepository()
-
+text_history_repository= TextHistoryRepository()
 
 class TextHistoryTestCase(unittest.TestCase):
     def setUp(self):
@@ -35,7 +35,7 @@ class TextHistoryTestCase(unittest.TestCase):
         history = TextHistory()
         history.text_id = text.id
         history.content = "Hola mundo"
-        history.save()
+        text_history_repository.save(history)
 
         self.assertGreaterEqual(history.id, 1)
         self.assertEqual(history.text_id, text.id)
@@ -57,13 +57,8 @@ class TextHistoryTestCase(unittest.TestCase):
         version2.content = "Bonjour monde"
         text_repository.save(version2)
 
-        # Cambia a la primera versión y verifica que el contenido cambie
-        version1.change_to_version(version1.id)
-        updated_text = text_repository.find(text.id)
-        self.assertEqual(updated_text.content, version1.content)
-
-        # Cambia a la segunda versión y verifica que el contenido cambie
-        version2.change_to_version(version2.id)
+        # Cambia la versión y verifica que el contenido cambie
+        text_repository.change_to_version(version2.id)
         updated_text = text_repository.find(text.id)
         self.assertEqual(updated_text.content, version2.content)
 

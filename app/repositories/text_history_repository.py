@@ -22,3 +22,4 @@ class TextHistoryRepository:
 
     def find_by(self, **kwargs) -> List["TextHistory"]:
         return db.session.query(TextHistory).filter_by(**kwargs).all()
+
