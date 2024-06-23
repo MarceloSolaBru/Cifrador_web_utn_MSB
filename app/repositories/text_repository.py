@@ -23,8 +23,3 @@ class TextRepository:
     def find_by(self, **kwargs) -> List["Text"]:
         return db.session.query(Text).filter_by(**kwargs).all()
 
-    def change_to_version(self, text_id:int)->Text:
-        text_history=TextRepository.find(self,text_id)
-        db.session.add(text_history)
-        db.session.commit()
-        return text_history

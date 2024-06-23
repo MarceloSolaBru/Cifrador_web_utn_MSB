@@ -1,7 +1,6 @@
 from typing import List
-from app.models import TextHistory
+from app.models import TextHistory,Text
 from app import db
-
 
 class TextHistoryRepository:
     def save(self, text_history: TextHistory) -> TextHistory:
@@ -23,3 +22,10 @@ class TextHistoryRepository:
     def find_by(self, **kwargs) -> List["TextHistory"]:
         return db.session.query(TextHistory).filter_by(**kwargs).all()
 
+
+    def change_to_version(self, text_history_id: int) -> Text:
+        text_history = self.find(text_history_id)
+        text = db.session.query(Text).filter(Text.id == text_history.text_id).one()
+        text.content = text_history.content
+        db.session.commit()
+        return text

@@ -50,18 +50,21 @@ class TextHistoryTestCase(unittest.TestCase):
         version1 = TextHistory()
         version1.text_id = text.id
         version1.content = "Hola mundo"
-        text_repository.save(version1)
+        text_history_repository.save(version1)
 
         version2 = TextHistory()
         version2.text_id = text.id
         version2.content = "Bonjour monde"
-        text_repository.save(version2)
+        text_history_repository.save(version2)
 
-        # Cambia la versión y verifica que el contenido cambie
-        text_repository.change_to_version(version2.id)
+        # Cambia a la segunda versión y verifica que el contenido cambie
+        text_history_repository.change_to_version(version2.id)
         updated_text = text_repository.find(text.id)
         self.assertEqual(updated_text.content, version2.content)
 
+        text_history_repository.change_to_version(version1.id)
+        updated_text = text_repository.find(text.id)
+        self.assertEqual(updated_text.content, version1.content)
 
 if __name__ == "__main__":
     unittest.main()
