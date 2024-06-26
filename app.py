@@ -1,8 +1,7 @@
+import os
 from app import create_app, db
 from flask import Flask
 from app.routes.index import index
-from app.models import Text, TextHistory, Role, User, UserData
-import os
 from app.services import roles
 from error_handler.error_handler import register_error_handlers
 
@@ -14,7 +13,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 # register the blueprint
 app.register_blueprint(index)
 
-app.register_error_handler(app)
+register_error_handlers(app)
 
 with app.app_context():
     # Create tables
