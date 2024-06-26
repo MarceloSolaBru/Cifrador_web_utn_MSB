@@ -6,6 +6,13 @@ user_service = UserService()
 
 
 def create_admin_role():
+    """
+    Creates an admin role if it doesn't already exist.
+
+    This function checks if an admin role with the name "admin" already exists in the database.
+    If it doesn't exist, a new Role object is created with the name "admin" and description "Administrador",
+    and it is saved to the database.
+    """
     role = Role.query.filter_by(name="admin").first()
     if role:
         pass
@@ -17,6 +24,13 @@ def create_admin_role():
 
 
 def create_user_role():
+    """
+    Creates a user role if it doesn't already exist.
+
+    This function checks if a user role with the name "user" already exists in the database.
+    If it doesn't exist, a new Role object is created with the name "user" and description "Usuario",
+    and it is saved to the database.
+    """
     role = Role.query.filter_by(name="user").first()
     if role:
         pass
@@ -28,6 +42,14 @@ def create_user_role():
 
 
 def create_admin_user():
+    """
+    Creates an admin user if it doesn't already exist.
+
+    This function checks if an admin user with the username "admin" already exists in the database.
+    If it doesn't exist, a new UserData object is created with the necessary user data,
+    and a new User object is created with the email, username, password, role_id, and the UserData object.
+    The User object is then saved to the database using the user_service.
+    """
     user = User.query.filter_by(username="admin").first()
     if user:
         pass

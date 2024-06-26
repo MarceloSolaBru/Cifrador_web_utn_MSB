@@ -18,4 +18,4 @@ def register_error_handlers(app):
         }
         return jsonify(response), 500
 
-    # Puedes agregar más manejadores de errores aquí
+    # Agregar más manejadores de errores aquí
