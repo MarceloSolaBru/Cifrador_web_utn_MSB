@@ -9,7 +9,6 @@ from app.models import Text
 from app.repositories import TextRepository
 from lorem_text import lorem
 
-
 # ----------------------------- fin importaciones ---------------------------- #
 
 # ---------------------------------------------------------------------------- #

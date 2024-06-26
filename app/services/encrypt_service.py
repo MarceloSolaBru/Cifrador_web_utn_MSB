@@ -12,9 +12,6 @@ text_repository = TextRepository()
 
 
 class EncryptService:
-    """
-    This class provides encryption and decryption services using Fernet encryption algorithm.
-    """
 
     KEY_SIZE = 32
     

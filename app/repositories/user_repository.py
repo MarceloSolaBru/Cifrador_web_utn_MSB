@@ -41,5 +41,4 @@ class UserRepository:
         return db.session.query(User).filter(User.username == username).one_or_none()
 
     def find_by_email(self, email: str) -> list[User]:
-        # busqueda por like
         return db.session.query(User).filter(User.email.like(f"%{email}%")).all()
