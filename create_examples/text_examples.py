@@ -1,4 +1,3 @@
-# ------------------------------- importaciones ------------------------------ #
 import os
 import sys
 
@@ -8,12 +7,6 @@ from app import db, create_app
 from app.models import Text
 from app.repositories import TextRepository
 from lorem_text import lorem
-
-# ----------------------------- fin importaciones ---------------------------- #
-
-# ---------------------------------------------------------------------------- #
-#                  crea textos de ejemplo en la base de datos                  #
-# ---------------------------------------------------------------------------- #
 
 app = create_app()
 app_context = app.app_context()

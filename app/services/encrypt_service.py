@@ -1,15 +1,9 @@
-# ------------------------------- importaciones ------------------------------ #
 from cryptography.fernet import Fernet
 from app.models import Text
 from app.repositories import TextRepository
 import base64
 
-# ----------------------------- fin importaciones ---------------------------- #
-
-# ------------------------------- repositorios ------------------------------- #
 text_repository = TextRepository()
-# ----------------------------- fin repositorios ----------------------------- #
-
 
 class EncryptService:
     """

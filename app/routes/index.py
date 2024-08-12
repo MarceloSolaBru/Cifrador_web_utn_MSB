@@ -14,18 +14,45 @@ user_services = UserService()
 
 @index.route("/all_texts", methods=["GET"])
 def all_texts():
+    """
+    Retrieves all texts from the TextRepository.
+
+    Returns:
+        A JSON response containing all the texts.
+    """
     texts = TextRepository().all()
     return jsonify(texts)
 
 
 @index.route("/get_text/<id>", methods=["GET"])
 def get_text(id):
+    """
+    Retrieves the text with the given ID from the TextRepository.
+
+    Parameters:
+    - id (int): The ID of the text to retrieve.
+
+    Returns:
+    - jsonify: The JSON representation of the retrieved text.
+    """
     text = TextRepository().find(id)
     return jsonify(text)
 
 
 @index.route("/add_text", methods=["POST"])
 def add_text():
+    """
+    Adds a new text to the TextRepository.
+
+    Parameters:
+        None
+
+    Returns:
+        dict: A JSON response containing a success message.
+
+    Raises:
+        None
+    """
     content = (
         request.json.get("content", "default_content")
         if request.json
@@ -43,6 +70,18 @@ def add_text():
 
 @index.route("/delete_text/<id>", methods=["DELETE"])
 def delete_text(id):
+    """
+    Deletes a text with the given ID.
+
+    Parameters:
+    - id (int): The ID of the text to be deleted.
+
+    Returns:
+    - dict: A dictionary containing a success message.
+
+    Example:
+    delete_text(1)
+    """
     text_to_delete = TextRepository().find(id)
     TextRepository().delete(text_to_delete)
     return jsonify({"message": "Text deleted successfully"})
@@ -50,6 +89,19 @@ def delete_text(id):
 
 @index.route("/edit_text/<id>", methods=["PUT"])
 def edit_text(id):
+    """
+    Edit the content of a text identified by its ID.
+
+    Parameters:
+        id (int): The ID of the text to be edited.
+
+    Returns:
+        dict: A JSON response containing a message indicating the success of the operation.
+
+    Raises:
+        None
+
+    """
     text_to_edit = TextRepository().find(id)
     if (
         request.json is not None
@@ -69,6 +121,13 @@ def edit_text(id):
 
 @index.route("/encrypt_text", methods=["POST"])
 def encrypt_text():
+    """
+    Encrypts the content of a text using a provided key.
+
+    Returns:
+        A JSON response containing a success message if the encryption is successful, 
+        or an error message with a status code 400 if the request data is invalid.
+    """
     if request.json is not None and "text_id" in request.json and "key" in request.json:
         text_id = request.json["text_id"]
         text = TextRepository().find(text_id)
@@ -80,6 +139,16 @@ def encrypt_text():
 
 @index.route("/decrypt_text", methods=["POST"])
 def decrypt_text():
+    """
+    Decrypts the content of a text using a provided key.
+
+    Returns:
+        A JSON response containing a success message if the text was decrypted successfully,
+        or an error message if the request data is invalid.
+
+    Raises:
+        None
+    """
     if request.json is not None and "text_id" in request.json and "key" in request.json:
         text_id = request.json["text_id"]
         text = TextRepository().find(text_id)

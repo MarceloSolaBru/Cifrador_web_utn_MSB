@@ -7,6 +7,22 @@ from app import db
 
 @dataclass(init=False, repr=True, eq=True)
 class Text(db.Model):
+    class Text:
+        """
+        Represents a text object.
+        Attributes:
+            id (int): The unique identifier of the text.
+            content (str): The content of the text.
+            length (int): The length of the text.
+            language (str): The language of the text.
+            encrypted (bool): Indicates if the text is encrypted or not.
+            key (str): The encryption key for the text.
+            user_id (int): The foreign key referencing the user who owns the text.
+            histories (list): A list of text history objects associated with the text.
+        Methods:
+            __init__(self, content: str = "default text", language: str = "es"): Initializes a new Text object.
+            to_json(self): Converts the Text object to a JSON representation.
+        """
     __tablename__ = "texts"
     # --------------------------- columnas de la tabla --------------------------- #
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
