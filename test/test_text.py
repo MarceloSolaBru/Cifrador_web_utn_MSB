@@ -114,13 +114,14 @@ class TextTestCase(unittest.TestCase):
         from app.models.user_data import UserData
 
         # Crea un objeto UserData con información de prueba
-        data = UserData()
-        data.firstname = "Pablo"
-        data.lastname = "Prats"
-        data.address = "Address 1234"
-        data.city = "San Rafael"
-        data.country = "Argentina"
-        data.phone = "54260123456789"
+        data = UserData(
+            firstname="Pablo",
+            lastname="Prats",
+            address="Address 1234",
+            city="San Rafael",
+            country="Argentina",
+            phone="54260123456789",
+        )
 
         # Crea un objeto User y establece sus atributos
         user = User(data)

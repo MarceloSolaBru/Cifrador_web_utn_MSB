@@ -32,8 +32,8 @@ class RoleTestCase(unittest.TestCase):
     # Prueba la creación de roles
     def test_role(self):
         role = self.__get_role()
-        self.assertTrue(role.name, "ROLE_ADMIN")
-        self.assertTrue(role.description, "Administrator")
+        self.assertTrue(role.name, self.ROL_NAME)
+        self.assertTrue(role.description, self.ROL_DESCRIPCION)
 
     def test_role_save(self):
         role = self.__get_role()
