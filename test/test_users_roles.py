@@ -10,7 +10,9 @@ user_service = UserService()
 
 
 class UsersRoleTestCase(unittest.TestCase):
-
+    """
+    Aplicar DRY, KISS y YAGNI
+    """
     def setUp(self):
         self.app = create_app()
         self.app_context = self.app.app_context()

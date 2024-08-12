@@ -24,14 +24,14 @@ class RoleRepository:
 
     def update(self, role: Role, id: int) -> Role:
         """
-        Update a Role object in the database.
+        Updates a role in the database.
 
         Args:
-            role (Role): The updated Role object.
-            id (int): The ID of the Role object to be updated.
+            role (Role): The updated role object.
+            id (int): The ID of the role to be updated.
 
         Returns:
-            Role: The updated Role object.
+            Role: The updated role object.
         """
         entity = self.find(id)
         entity.name = role.name
