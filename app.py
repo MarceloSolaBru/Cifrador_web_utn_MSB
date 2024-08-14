@@ -8,13 +8,11 @@ from error_handler.error_handler import register_error_handlers
 app = create_app()
 app.secret_key = os.environ.get("SECRET_KEY")
 
-# register the blueprint
 app.register_blueprint(index)
 
 register_error_handlers(app)
 
 with app.app_context():
-    # Create tables
     db.create_all()
     # TODO: NO SE SI LAS ESTOY LLAMANDO CONSTANTEMENTE TENGO QUE BUSCAR LA FORMA DE LLAMARLAS UNA SOLA VEZ
     roles.create_admin_role()

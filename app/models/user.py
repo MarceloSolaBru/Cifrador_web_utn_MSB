@@ -1,12 +1,9 @@
-# ------------------------------- importaciones ------------------------------ #
 from dataclasses import dataclass
 from .user_data import UserData
 from app import db
 from app.models.relations import users_roles
 from app.models.audit_mixin import AuditMixin
 from app.models.soft_delete import SoftDeleteMixin
-
-# ----------------------------- fin importaciones ---------------------------- #
 
 
 @dataclass(init=False, repr=True, eq=True)
