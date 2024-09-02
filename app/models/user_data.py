@@ -4,7 +4,7 @@ from app.models.audit_mixin import AuditMixin
 from app.models.soft_delete import SoftDeleteMixin
 
 @dataclass(init=False, repr=True, eq=True)
-class UserData(db.Model, AuditMixin, SoftDeleteMixin):
+class UserData(SoftDeleteMixin, db.Model):
     """
     Represents user data.
     Attributes:
