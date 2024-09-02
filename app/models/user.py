@@ -6,7 +6,7 @@ from app.models.audit_mixin import AuditMixin
 from app.models.soft_delete import SoftDeleteMixin
 
 
-@dataclass
+@dataclass(init=False, repr=True, eq=True)
 class User(SoftDeleteMixin, AuditMixin, db.Model):
     """
     User class represents a user in the application.
@@ -26,12 +26,12 @@ class User(SoftDeleteMixin, AuditMixin, db.Model):
         remove_role(role): Removes a role from the user's list of roles.
     """
     __tablename__ = "users"
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"), nullable=True)
-    
+    id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username: str = db.Column(db.String(80), unique=True, nullable=False)
+    password: str = db.Column("password", db.String(255), nullable=False)
+    email: str = db.Column(db.String(120), unique=True, nullable=False)
+    role_id: int = db.Column(db.Integer, db.ForeignKey("roles.id"), nullable=True)
+
     roles = db.relationship("Role", secondary=users_roles, back_populates="users")
     users_rs = db.relationship("Text", backref="user", lazy=True)
     data = db.relationship(
@@ -41,17 +41,17 @@ class User(SoftDeleteMixin, AuditMixin, db.Model):
         foreign_keys="[UserData.user_id]",
     )
 
-    def __init__(
-        self,
-        username: str = None,
-        password: str = None,
-        email: str = None,
-        data: UserData = None,
-    ):
-        self.data = data
-        self.username = username
-        self.password = password
-        self.email = email
+    def __init__(self, user_data: UserData):
+        """
+        Initializes a User object.
+
+        Args:
+            user_data (UserData): The user data object containing information about the user.
+
+        Returns:
+            None
+        """
+        self.data = user_data
 
     def add_role(self, role):
         """

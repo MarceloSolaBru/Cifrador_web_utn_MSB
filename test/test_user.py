@@ -1,4 +1,3 @@
-import os
 import unittest
 from flask import current_app
 from app.models import User, UserData
@@ -26,7 +25,6 @@ class UserTestCase(unittest.TestCase):
         self.CITY_PRUEBA = "San Rafael"
         self.COUNTRY_PRUEBA = "Argentina"
 
-        os.environ["FLASK_CONTEXT"] = "testing"
         self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
@@ -71,17 +69,15 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(user_find.email, user.email)
 
     def __get_user(self):
-        data = UserData(
-            firstname=self.FIRSTNAME_PRUEBA,
-            lastname=self.LASTNAME_PRUEBA,
-            phone=self.PHONE_PRUEBA,
-            address=self.ADDRESS_PRUEBA,
-            city=self.CITY_PRUEBA,
-            country=self.COUNTRY_PRUEBA,
-        )
+        data = UserData()
+        data.firstname = self.FIRSTNAME_PRUEBA
+        data.lastname = self.LASTNAME_PRUEBA
+        data.phone = self.PHONE_PRUEBA
+        data.address = self.ADDRESS_PRUEBA
+        data.city = self.CITY_PRUEBA
+        data.country = self.COUNTRY_PRUEBA
 
-        user = User()
-        user.data = data
+        user = User(data)
         user.username = self.USERNAME_PRUEBA
         user.email = self.EMAIL_PRUEBA
         user.password = self.PASSWORD_PRUEBA

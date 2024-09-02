@@ -2,11 +2,10 @@
 import unittest
 from flask import current_app
 from app import create_app, db
-from app.models import Text
+from app.models import Text, TextHistory
 from app.services import UserService, EncryptService, TextService
 from app.repositories import TextRepository
-from app.models.user import User
-from app.models.user_data import UserData
+
 # ----------------------------- fin importaciones ---------------------------- #
 
 # ------------------------- servicios y repositorios ------------------------- #
@@ -17,40 +16,36 @@ text_repository = TextRepository()
 
 class TextTestCase(unittest.TestCase):
     # * METODO PARA CREAR LA BASE DE DATOS
-    @classmethod
-    def setUpClass(cls):
-        cls.app = create_app()
-        cls.app_context = cls.app.app_context()
-        cls.app_context.push()
-        db.create_all()
-
-    @classmethod
-    def tearDownClass(cls):
-        db.drop_all()
-        cls.app_context.pop()
-
     def setUp(self):
-        self.content = "Hola mundo"
-        self.length = len(self.content)
-        self.language = "es"
+        # --------------------------- seteo atributos texto -------------------------- #
+        self.CONTENT_PRUEBA = "Hola mundo"
+        self.LENGTH_PRUEBA = len(self.CONTENT_PRUEBA)
+        self.LANGUAGE_PRUEBA = "es"
+        # ------------------------- fin seteo atributos texto ------------------------ #
+        self.app = create_app()
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        db.create_all()
 
     # * METODO PARA DESTRUIR LA BASE DE DATOS
     def tearDown(self):
         db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
 
     # * GETTER DE TEXTO
     def __get_text(self):
         text = Text()
-        text.content = self.content
-        text.length = self.length
-        text.language = self.language
+        text.content = self.CONTENT_PRUEBA
+        text.length = self.LENGTH_PRUEBA
+        text.language = self.LANGUAGE_PRUEBA
         return text
 
     # * METODO PARA COMPROBAR QUE LOS ATRIBUTOS DE TEXTO SEAN CORRECTOS
     def assert_text_content(self, text):
-        self.assertEqual(text.content, self.content)
-        self.assertEqual(text.length, self.length)
-        self.assertEqual(text.language, self.language)
+        self.assertEqual(text.content, "Hola mundo")
+        self.assertEqual(text.length, 10)
+        self.assertEqual(text.language, "es")
 
     def test_text(self):
         text = self.__get_text()
@@ -71,7 +66,7 @@ class TextTestCase(unittest.TestCase):
     def test_text_find(self):
         text = self.__get_text()
         text_repository.save(text)
-        text_find = text_repository.find(text.id) 
+        text_find = text_repository.find(1)
         self.assertIsNotNone(text_find)
         self.assertEqual(text_find.id, text.id)
         self.assert_text_content(text_find)
@@ -80,7 +75,7 @@ class TextTestCase(unittest.TestCase):
         text = self.__get_text()
         text_repository.save(text)
         encrypt_service.encrypt_content(text)
-        self.assertNotEqual(text.content, self.content)
+        self.assertNotEqual(text.content, "Hola mundo")
         self.assertTrue(text.encrypted)
 
     def test_manual_encrypt_content(self):
@@ -88,7 +83,7 @@ class TextTestCase(unittest.TestCase):
         text_repository.save(text)
         key = "secret_key"
         encrypt_service.encrypt_content(text, key)
-        self.assertNotEqual(text.content, self.content)
+        self.assertNotEqual(text.content, "Hola mundo")
         self.assertTrue(text.encrypted)
 
     def test_decrypt_content(self):
@@ -97,7 +92,7 @@ class TextTestCase(unittest.TestCase):
         key = "secret_key"
         encrypt_service.encrypt_content(text, key)
         encrypt_service.decrypt_content(text, key)
-        self.assertEqual(text.content, self.content)
+        self.assertEqual(text.content, "Hola mundo")
 
     def test_edit_content(self):
         text = self.__get_text()
