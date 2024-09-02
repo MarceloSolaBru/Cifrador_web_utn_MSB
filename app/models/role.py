@@ -1,4 +1,3 @@
-# Importa el decorador dataclass desde el módulo dataclasses
 from dataclasses import dataclass
 from .user import User
 
@@ -8,7 +7,6 @@ from app.models.relations import users_roles
 from app import db
 
 
-# Define una clase llamada Role utilizando el decorador dataclass
 @dataclass(init=False, repr=True, eq=True)
 class Role(db.Model):
     """

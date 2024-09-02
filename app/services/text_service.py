@@ -1,5 +1,5 @@
 from app.models import Text, TextHistory
-from app.repositories import TextRepository, TextHistoryRepository
+from app.repositories import TextHistoryRepository
 from app import db
 
 

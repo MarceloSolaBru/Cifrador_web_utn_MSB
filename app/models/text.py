@@ -2,7 +2,16 @@ from dataclasses import dataclass
 from app import db
 
 @dataclass(init=False, repr=True, eq=True)
-class Text(db.Model):
+class BaseModel(db.Model):
+    __abstract__ = True
+
+    def to_json(self):
+        return {
+            column.name: getattr(self, column.name) for column in self.__table__.columns
+        }
+    
+@dataclass(init=False, repr=True, eq=True)
+class Text(BaseModel):
     class Text:
         """
         Represents a text object.
@@ -20,7 +29,7 @@ class Text(db.Model):
             to_json(self): Converts the Text object to a JSON representation.
         """
     __tablename__ = "texts"
-    # --------------------------- columnas de la tabla --------------------------- #
+
     id: int = db.Column(db.Integer, primary_key=True, autoincrement=True)
     content: str = db.Column(db.String(120), nullable=False)
     length: int = db.Column(db.Integer, nullable=False)
