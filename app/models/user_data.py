@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from app import db
 from app.models.audit_mixin import AuditMixin
 from app.models.soft_delete import SoftDeleteMixin
+from app import db
 
 @dataclass(init=False, repr=True, eq=True)
 class UserData(SoftDeleteMixin, db.Model):
@@ -34,6 +34,17 @@ class UserData(SoftDeleteMixin, db.Model):
         "User", back_populates="data", foreign_keys=[user_id], uselist=False
     )
     profile_id = db.Column("profile_id", db.Integer, db.ForeignKey("profiles.id"))
-    profile = db.relationship(
-        "Profile", back_populates="data", foreign_keys=[profile_id]
-    )
+    profile = db.relationship("Profile", back_populates='data')
+
+    def __init__(
+            self, firstname: str = None, lastname: str = None, phone: str = None,
+            address: str = None, city: str = None, country: str = None, profile = None
+            ):
+        
+        self.firstname = firstname
+        self.lastname = lastname
+        self.phone = phone
+        self.address = address
+        self.city = city
+        self.country = country
+        self.profile = profile

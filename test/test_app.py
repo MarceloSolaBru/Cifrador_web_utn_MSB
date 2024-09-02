@@ -3,10 +3,12 @@ from flask import current_app
 from app import create_app
 from app.mapping.response_schema import ResponseSchema
 from app.services.response_message import ResponseBuilder
+import os
 
 class AppTestCase(unittest.TestCase):
     # Método de configuración que se ejecuta antes de cada prueba
     def setUp(self):
+        os.environ['FLASK_CONTEXT'] = 'testing'
         # Crea una instancia de la aplicación Flask para pruebas
         self.app = create_app()
         # Crea un contexto de la aplicación y lo activa

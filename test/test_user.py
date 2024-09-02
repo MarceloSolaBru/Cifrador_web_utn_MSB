@@ -1,3 +1,4 @@
+import os
 import unittest
 from flask import current_app
 from app.models import User, UserData
@@ -25,6 +26,8 @@ class UserTestCase(unittest.TestCase):
         self.CITY_PRUEBA = "San Rafael"
         self.COUNTRY_PRUEBA = "Argentina"
 
+        os.environ['FLASK_CONTEXT'] = 'testing'
+
         self.app = create_app()
         self.app_context = self.app.app_context()
         self.app_context.push()
@@ -40,18 +43,39 @@ class UserTestCase(unittest.TestCase):
 
     def test_user(self):
         user = self.__get_user()
-        user_service.save(user)
-        self.__assert_user_data(user)
+        self.assertEqual(user.email, self.EMAIL_PRUEBA)
+        self.assertEqual(user.username, self.USERNAME_PRUEBA)
+        self.assertEqual(user.password, self.PASSWORD_PRUEBA)
+        
+        self.assertIsNotNone(user.data)
+
+        self.assertEqual(user.data.address, self.ADDRESS_PRUEBA)
+        self.assertEqual(user.data.firstname, self.FIRSTNAME_PRUEBA)
+        self.assertEqual(user.data.lastname, self.LASTNAME_PRUEBA)
+        self.assertEqual(user.data.phone, self.PHONE_PRUEBA) 
 
     def test_user_save(self):
+        
         user = self.__get_user()
         user_service.save(user)
-        self.__assert_user_data(user)
+        
+        self.assertGreaterEqual(user.id, 1)
+
+        self.assertEqual(user.email, self.EMAIL_PRUEBA)
+        self.assertEqual(user.username, self.USERNAME_PRUEBA)
+        self.assertIsNotNone(user.password)
+        self.assertTrue(user_service.check_auth(user.username, self.PASSWORD_PRUEBA))
+        self.assertIsNotNone(user.data)
+        self.assertEqual(user.data.address, self.ADDRESS_PRUEBA)
+        self.assertEqual(user.data.firstname, self.FIRSTNAME_PRUEBA)
+        self.assertEqual(user.data.lastname, self.LASTNAME_PRUEBA)
+        self.assertEqual(user.data.phone, self.PHONE_PRUEBA)
+    
 
     def test_user_delete(self):
         user = self.__get_user()
         user_service.save(user)
-        user_service.delete(user)
+        user_service.delete(user.id)
         self.assertIsNone(user_service.find(user))
 
     def test_user_all(self):
@@ -77,7 +101,8 @@ class UserTestCase(unittest.TestCase):
         data.city = self.CITY_PRUEBA
         data.country = self.COUNTRY_PRUEBA
 
-        user = User(data)
+        user = User()
+        user.data = data
         user.username = self.USERNAME_PRUEBA
         user.email = self.EMAIL_PRUEBA
         user.password = self.PASSWORD_PRUEBA

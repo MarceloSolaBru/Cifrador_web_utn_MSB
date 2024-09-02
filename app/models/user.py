@@ -1,9 +1,9 @@
 from dataclasses import dataclass
+from app.models.audit_mixin import AuditMixin
+from app.models.soft_delete import SoftDeleteMixin
 from .user_data import UserData
 from app import db
 from app.models.relations import users_roles
-from app.models.audit_mixin import AuditMixin
-from app.models.soft_delete import SoftDeleteMixin
 
 
 @dataclass(init=False, repr=True, eq=True)
@@ -41,17 +41,11 @@ class User(SoftDeleteMixin, AuditMixin, db.Model):
         foreign_keys="[UserData.user_id]",
     )
 
-    def __init__(self, user_data: UserData):
-        """
-        Initializes a User object.
-
-        Args:
-            user_data (UserData): The user data object containing information about the user.
-
-        Returns:
-            None
-        """
-        self.data = user_data
+    def __init__(self, username: str = None, password: str = None, email: str = None, data: UserData = None):
+        self.data = data
+        self.username = username
+        self.password = password
+        self.email = email
 
     def add_role(self, role):
         """

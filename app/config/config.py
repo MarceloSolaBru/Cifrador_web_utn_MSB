@@ -17,6 +17,12 @@ class Config(object):
     def init_app(app):
         pass  
 
+class TestConfig(Config):
+    TESTING = True
+    DEBUG = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI')
+
 class DevelopmentConfig(Config):
     TESTING = True  
     DEBUG = True  
@@ -38,6 +44,7 @@ class ProductionConfig(Config):
 
 def factory(app):
     configuration = {
+        'testing': TestConfig,
         "development": DevelopmentConfig,  
         "production": ProductionConfig,  
     }

@@ -36,9 +36,12 @@ class UserService:
             User: The updated user object.
         """
         # TODO: Implementar auditoria
+        if user.password is not None:
+            user.password = self.__security.generate_password(user.password)
+        
         return repository.update(user, id)
 
-    def delete(self, user: User) -> None:
+    def delete(self, id:int) -> None:
         """
         Delete a user from the repository.
 
@@ -46,6 +49,7 @@ class UserService:
             user (User): The user object to be deleted.
         """
         # TODO: Implementar auditoria
+        user = repository.find(id)
         repository.delete(user)
 
     def all(self) -> List[User]:
