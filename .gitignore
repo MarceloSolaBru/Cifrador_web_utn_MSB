@@ -136,3 +136,12 @@ pyvenv.cfg
 
 # Docker files
 _data/pgdata
+
+# add vscode settings
+.vscode/
+
+# add vscode workspace settings
+*.code-workspace
+
+# add migration files
+migrations/
